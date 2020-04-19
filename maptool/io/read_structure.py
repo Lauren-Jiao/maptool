@@ -54,7 +54,7 @@ def read_structures(cls=None):
 
 def read_structures_from_file(fname):
     try:
-      atoms=read(fname)
+      atom=read(fname)
       return  ase2pmg(atoms)
     except:
        try:
@@ -76,17 +76,12 @@ def read_structures_from_files(fnames):
         if structure is not None:
             structures.append(structure)
             if '/' in fname:
-               final_fnames.append(fname.replace('/','_'))
-            else:
-               final_fnames.append(fname)
-
+                 final_fnames.append(fname.replace('/','_'))
     return structures,final_fnames
 
 if __name__=='__main__':
   sts,fn=read_structures()
-  print(type(sts),type(fn))
-  print("len sts: ",len(sts))
-  print("len fn:",len(fn))
-  for f,st in zip(fn,sts):
+  print(sts,fn)
+  for f, st in zip(fn,sts):
       print(f)
       print(st)

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# coding: utf-8
 from maptool import NAME
 from maptool.util.utils import sepline,multi_structs
 from maptool.io.read_structure import read_structures

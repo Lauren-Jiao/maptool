@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# coding: utf-8
 from  maptool.core.function import *
 from  maptool.core.convert import  covert_operation
 from  maptool.core.build import  build_operation
