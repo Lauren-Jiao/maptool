@@ -10,6 +10,7 @@ from maptool.io.read_structure import read_structures
 from pymatgen import Structure,Molecule
 from pymatgen.symmetry.analyzer import PointGroupAnalyzer,SpacegroupAnalyzer
 from pymatgen.analysis.molecule_matcher import MoleculeMatcher
+from pymatgen.analysis.diffraction.xrd import XRDCalculator
 
 
 def structure_symmetry():
@@ -18,18 +19,18 @@ def structure_symmetry():
     for struct,fname in zip(structs,fnames):
         if isinstance(struct,Structure):
             sa=SpacegroupAnalyzer(struct)
-            print("file name: {}".format(fname))
-            print("{} : {}".format('Structure Type','periodicity'))
-            print("{} : {}".format('Lattice Type',sa.get_lattice_type()))
-            print("{} : {}".format('Space Group ID',sa.get_space_group_number()))
-            print("{} : {}".format('International Symbol',sa.get_space_group_symbol()))
-            print("{} : {}".format('Hall Symbol',sa.get_hall()))
+            print("{:<20} : {}".format('File Name',fname))
+            print("{:<20} : {:<15}".format('Structure Type','periodicity'))
+            print("{:<20} : {:<15}".format('Lattice Type',sa.get_lattice_type()))
+            print("{:<20} : {:<15d}".format('Space Group ID',sa.get_space_group_number()))
+            print("{:<20} : {:<15}".format('International Symbol',sa.get_space_group_symbol()))
+            print("{:<20} : {:15}".format('Hall Symbol',sa.get_hall()))
             sepline()
         if isinstance(struct,Molecule):
-            print("file name: {}".format(fname))
+            print("{:<20} : {}".format('File Name',fname))
             sa=PointGroupAnalyzer(struct)
-            print("{} : {}".format('Structure Type','non-periodicity'))
-            print("{} : {}".format('International Symbol',ast.get_pointgroup()))
+            print("{:<20} : {:<15}".format('Structure Type','non-periodicity'))
+            print("{:<20} : {:<15}".format('International Symbol',ast.get_pointgroup()))
     return True
 
 
@@ -152,3 +153,17 @@ def rdf(structures: List[Structure],
     rdf = hist * st.num_sites / (volumes * nA * nB * rho * nsteps)
     radii = 0.5 * (edges[1:] + edges[:-1])
     return (rdf, radii)
+
+def xrd(structure: Structure):
+    '''
+    Calculate XRD pattern of given structure, raw pattern data is returned
+
+    @in
+      - structure, Structure
+    @out
+      - x, np.1darray, theta
+      - y, np.1darray, intensity
+    '''
+    c = XRDCalculator()
+    pattern = c.get_pattern(structure)
+    return (pattern.x, pattern.y)
